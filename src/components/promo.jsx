@@ -55,7 +55,6 @@ const Promo = (props) => {
 
     if (response.status && response.status === 200) {
       setPromos(response.data);
-      // setFiltered(response.data);
     }
   }
 
