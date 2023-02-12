@@ -11,23 +11,11 @@ const Promo = (props) => {
   const URL = process.env.REACT_APP_API_URL;
   const [show, setShow] = useState(false);
   const [promos, setPromos] = useState(null);
+  const [filter, setFilter] = useState("activas");
+  const [filtered, setFiltered] = useState(null);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  async function getPromotions() {
-    let url = `${URL}/api/admin/promos`;
-    let token = localStorage.getItem("token");
-    if (!token || token === "") return;
-
-    let headers = { "x-auth-token": token };
-
-    let response = await http.get(url, {}, headers);
-
-    if (response.status && response.status === 200) {
-      setPromos(response.data);
-    }
-  }
 
   async function disablePromotion(id) {
     let url = `${URL}/api/admin/promos/${id}/disable`;
@@ -44,9 +32,41 @@ const Promo = (props) => {
     }
   }
 
+  function filterActivity() {
+    if (filter === "activas") {
+      const matches = promos.filter((promo) => promo.enabled);
+      setFiltered(matches);
+      return;
+    }
+
+    const matches = promos.filter((promo) => !promo.enabled);
+    setFiltered(matches);
+    return;
+  }
+
+  async function getPromotions() {
+    let url = `${URL}/api/admin/promos`;
+    let token = localStorage.getItem("token");
+    if (!token || token === "") return;
+
+    let headers = { headers: { "x-auth-token": token } };
+
+    let response = await http.get(url, headers);
+
+    if (response.status && response.status === 200) {
+      setPromos(response.data);
+      // setFiltered(response.data);
+    }
+  }
+
   useEffect(() => {
     getPromotions();
   }, []);
+
+  useEffect(() => {
+    if (!promos || promos.length < 1) return;
+    filterActivity();
+  }, [filter, promos]);
 
   return (
     <React.Fragment>
@@ -83,8 +103,12 @@ const Promo = (props) => {
                 <tr>
                   <td>No hay promociones disponibles</td>
                 </tr>
+              ) : !filtered || filtered.length < 1 ? (
+                <tr>
+                  <td>No hay promociones {filter} disponibles</td>
+                </tr>
               ) : (
-                promos.map((promo, idx) => (
+                filtered.map((promo, idx) => (
                   <tr id={promo._id} key={promo._id}>
                     <td>{idx + 1}</td>
                     <td>{promo.name}</td>
@@ -112,6 +136,15 @@ const Promo = (props) => {
           <Button variant="primary" onClick={handleShow}>
             Crear nueva promocion
           </Button>
+          &nbsp;
+          <select
+            name="filter_activity"
+            id="filter_activity"
+            onChange={(e) => setFilter(e.currentTarget.value)}
+          >
+            <option value={"activas"}>Activas</option>
+            <option value={"inactivas"}>Inactivas</option>
+          </select>
         </div>
       </div>
     </React.Fragment>

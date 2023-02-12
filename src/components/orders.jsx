@@ -16,6 +16,8 @@ function Orders() {
     let url = `${URL}/api/admin/orders`;
     let token = localStorage.getItem("token");
 
+    if (!token || token === "") return;
+
     let response = await http.get(url, { headers: { "x-auth-token": token } });
 
     if (response.status && response.status === 200) {
@@ -86,7 +88,7 @@ function Orders() {
           <Spinner className="m-3" animation="grow" variant="light" />
         </span>
       ) : (
-        <Table striped bordered hover variant="light">
+        <Table striped bordered hover variant="light" responsive>
           <thead>
             <tr>
               <th>#</th>

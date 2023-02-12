@@ -222,3 +222,18 @@ code {
 #error-page h1 {
   font-family: Anton;
 }
+
+#filter_activity {
+  padding: 8px;
+  background-color: #1f618d;
+  color: #fff;
+  font-family: Anton;
+  border-style: none;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+}
+
+#filter_activity option {
+  font-family: Anton;
+  letter-spacing: 0.5px;
+}

@@ -71,7 +71,7 @@ function Products() {
           <Spinner className="m-3" animation="grow" variant="light" />
         </span>
       ) : (
-        <Table striped bordered hover variant="light">
+        <Table striped bordered hover variant="light" responsive>
           <thead>
             <tr>
               <th>#</th>
