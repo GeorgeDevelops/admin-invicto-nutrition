@@ -1,0 +1,9 @@
+@media screen and (min-width: 1150px) {
+  #promo,
+  #orders,
+  #products,
+  #email {
+    width: 90%;
+    margin: 0px auto;
+  }
+}
