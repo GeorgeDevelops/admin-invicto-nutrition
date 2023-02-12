@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { store } from "../app/store";
 import { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
+import logo from "./../images/invicto-logo-blueandgray.png";
 
 function NavBar() {
   const [admin, setAdmin] = useState(store.getState().user.value);
@@ -31,7 +32,8 @@ function NavBar() {
         <Container>
           <Navbar.Brand>
             <Link to={"/inicio"} id="title">
-              Invicto Nutrition Admin
+              <img src={logo} width={"40px"} alt="Logo" />
+              &nbsp;Invicto Nutrition Admin
             </Link>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
