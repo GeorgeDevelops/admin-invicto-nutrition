@@ -25,10 +25,10 @@ const Home = (props) => {
   async function getOrders() {
     return new Promise(async (resolve, reject) => {
       let url = `${URL}/api/admin/orders`;
-      let token = localStorage.getItem("token");
+      let AUTH_TOKEN = localStorage.getItem("token");
 
       let response = await http.get(url, {
-        headers: { "x-auth-token": token },
+        headers: { "x-auth-token": AUTH_TOKEN },
       });
 
       if (response.status && response.status === 200) {
@@ -40,12 +40,12 @@ const Home = (props) => {
 
   async function getPendingOrders(status) {
     return new Promise(async (resolve, reject) => {
-      let token = localStorage.getItem("token");
+      let AUTH_TOKEN = localStorage.getItem("token");
 
       let response = await http.get(
         `${URL}/api/admin/orders/${status}/filter`,
         {
-          headers: { "x-auth-token": token },
+          headers: { "x-auth-token": AUTH_TOKEN },
         }
       );
 
@@ -58,12 +58,12 @@ const Home = (props) => {
 
   async function getCompletedOrders(status) {
     return new Promise(async (resolve, reject) => {
-      let token = localStorage.getItem("token");
+      let AUTH_TOKEN = localStorage.getItem("token");
 
       let response = await http.get(
         `${URL}/api/admin/orders/${status}/filter`,
         {
-          headers: { "x-auth-token": token },
+          headers: { "x-auth-token": AUTH_TOKEN },
         }
       );
 
@@ -77,10 +77,10 @@ const Home = (props) => {
   async function getCustomers() {
     return new Promise(async (resolve, reject) => {
       let url = `${URL}/api/admin/customers`;
-      let token = localStorage.getItem("token");
+      let AUTH_TOKEN = localStorage.getItem("token");
 
       let response = await http.get(url, {
-        headers: { "x-auth-token": token },
+        headers: { "x-auth-token": AUTH_TOKEN },
       });
 
       if (response.status && response.status === 200) {

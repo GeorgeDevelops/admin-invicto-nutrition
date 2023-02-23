@@ -14,11 +14,13 @@ function Orders() {
 
   async function getOrders() {
     let url = `${URL}/api/admin/orders`;
-    let token = localStorage.getItem("token");
+    let AUTH_TOKEN = localStorage.getItem("token");
 
-    if (!token || token === "") return;
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
 
-    let response = await http.get(url, { headers: { "x-auth-token": token } });
+    let response = await http.get(url, {
+      headers: { "x-auth-token": AUTH_TOKEN },
+    });
 
     if (response.status && response.status === 200) {
       setOrders(response.data);
@@ -95,6 +97,7 @@ function Orders() {
               <th>Pedido ID</th>
               <th>Estado</th>
               <th>Total pagado</th>
+              <th>Fuente</th>
               <th>Fecha Inicial</th>
               <th>Acciones</th>
             </tr>
@@ -111,6 +114,7 @@ function Orders() {
                   <td>{order.orderId}</td>
                   <td>{order.status}</td>
                   <td>${order.total}</td>
+                  <td>{order.source && order.source}</td>
                   <td>{order.date}</td>
                   <td>
                     <Link to={`/pedidos/${order._id}/detalles`}>

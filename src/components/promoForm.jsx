@@ -26,9 +26,9 @@ const PromoForm = ({ handleClose, show }) => {
   async function createPromo() {
     let url = `${URL}/api/admin/promos/new`;
 
-    let token = localStorage.getItem("token");
-    if (!token || token === "") return;
-    let headers = { "x-auth-token": token };
+    let AUTH_TOKEN = localStorage.getItem("token");
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
+    let headers = { "x-auth-token": AUTH_TOKEN };
 
     let data = {
       name,

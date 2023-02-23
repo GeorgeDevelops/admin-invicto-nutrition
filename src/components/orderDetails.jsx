@@ -30,10 +30,10 @@ function OrderDetails() {
   async function updateOrder() {
     let data = { status: newStatus };
 
-    let token = localStorage.getItem("token");
-    if (!token || token === "") return;
+    let AUTH_TOKEN = localStorage.getItem("token");
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
 
-    let headers = { "x-auth-token": token };
+    let headers = { "x-auth-token": AUTH_TOKEN };
     let url = `${URL}/api/admin/orders/${id}/update`;
 
     let confirmed = window.confirm(
@@ -56,8 +56,9 @@ function OrderDetails() {
   }
 
   async function getOrderOwner(customerId) {
+    let AUTH_TOKEN = localStorage.getItem("token");
     let headers = {
-      headers: { "x-auth-token": localStorage.getItem("token") },
+      headers: { "x-auth-token": AUTH_TOKEN },
     };
     let url = `${URL}/api/users/${customerId}`;
 
@@ -80,9 +81,11 @@ function OrderDetails() {
   }
 
   async function getOrder() {
-    let token = localStorage.getItem("token");
+    let AUTH_TOKEN = localStorage.getItem("token");
     let url = `${URL}/api/admin/orders/${id}/single`;
-    let response = await http.get(url, { headers: { "x-auth-token": token } });
+    let response = await http.get(url, {
+      headers: { "x-auth-token": AUTH_TOKEN },
+    });
 
     if (response.status && response.status === 200) {
       getOrderOwner(response.data.customerId);

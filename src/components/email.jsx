@@ -23,11 +23,11 @@ const Email = (props) => {
   async function sendEmail() {
     setSending(true);
     let url = `${URL}/api/admin/email/send`;
-    let token = localStorage.getItem("token");
+    let AUTH_TOKEN = localStorage.getItem("token");
 
-    if (!token || token === "") return;
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
 
-    let headers = { "x-auth-token": token };
+    let headers = { "x-auth-token": AUTH_TOKEN };
 
     let data = { email, subject, name, content };
 

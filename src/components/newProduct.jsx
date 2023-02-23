@@ -99,7 +99,8 @@ function NewProduct() {
               }
             );
           });
-        if (i === arr.length) resolve(true);
+        console.log(`${i} = ${arr.length - 1}`);
+        if (i === arr.length - 1) resolve(true);
       }
     });
   }
@@ -158,8 +159,11 @@ function NewProduct() {
       description,
     };
 
+    let AUTH_TOKEN = localStorage.getItem("token");
+    let headers = { headers: { "x-auth-token": AUTH_TOKEN } };
+
     let url = `${process.env.REACT_APP_API_URL}/api/products/new`;
-    let response = await http.post(url, product);
+    let response = await http.post(url, product, headers);
 
     if (response.status === 200) {
       setProductName("");
@@ -198,10 +202,16 @@ function NewProduct() {
   }
 
   async function deleteProduct() {
+    let AUTH_TOKEN = localStorage.getItem("token");
+    let headers = { headers: { "x-auth-token": AUTH_TOKEN } };
+
     setDeletingProduct(true);
     let id = params.id;
     let url = process.env.REACT_APP_API_URL;
-    let response = await http.delete(`${url}/api/products/delete/${id}`);
+    let response = await http.delete(
+      `${url}/api/products/delete/${id}`,
+      headers
+    );
 
     if (response.status && response.status === 200) {
       let imagesDeleted = await deleteImagesFromStorage(images);

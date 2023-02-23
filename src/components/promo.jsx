@@ -19,10 +19,10 @@ const Promo = (props) => {
 
   async function disablePromotion(id) {
     let url = `${URL}/api/admin/promos/${id}/disable`;
-    let token = localStorage.getItem("token");
-    if (!token || token === "") return;
+    let AUTH_TOKEN = localStorage.getItem("token");
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
 
-    let headers = { "x-auth-token": token };
+    let headers = { "x-auth-token": AUTH_TOKEN };
 
     let response = await http.put(url, headers);
 
@@ -46,10 +46,10 @@ const Promo = (props) => {
 
   async function getPromotions() {
     let url = `${URL}/api/admin/promos`;
-    let token = localStorage.getItem("token");
-    if (!token || token === "") return;
+    let AUTH_TOKEN = localStorage.getItem("token");
+    if (!AUTH_TOKEN || AUTH_TOKEN === "") return;
 
-    let headers = { headers: { "x-auth-token": token } };
+    let headers = { headers: { "x-auth-token": AUTH_TOKEN } };
 
     let response = await http.get(url, headers);
 
