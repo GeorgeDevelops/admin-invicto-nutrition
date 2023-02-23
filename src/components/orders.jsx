@@ -98,6 +98,7 @@ function Orders() {
               <th>Estado</th>
               <th>Total pagado</th>
               <th>Fuente</th>
+              <th>Cupon</th>
               <th>Fecha Inicial</th>
               <th>Acciones</th>
             </tr>
@@ -114,7 +115,8 @@ function Orders() {
                   <td>{order.orderId}</td>
                   <td>{order.status}</td>
                   <td>${order.total}</td>
-                  <td>{order.source && order.source}</td>
+                  <td>{order.payment_details.source}</td>
+                  <td>{order.promotionId ? "Si" : "No"}</td>
                   <td>{order.date}</td>
                   <td>
                     <Link to={`/pedidos/${order._id}/detalles`}>

@@ -26,6 +26,26 @@ function OrderDetails() {
   const [newStatus, setNewStatus] = useState(null);
   const [date, setDate] = useState(null);
   const [showSpinner, setShowSpinner] = useState(null);
+  const [paymentSource, setPaymentSource] = useState(null);
+  const [promotion, setPromotion] = useState(null);
+  const [promoId, setPromoId] = useState(null);
+
+  async function getPromo() {
+    console.log("called");
+    let AUTH_TOKEN = localStorage.getItem("token");
+    let headers = { headers: { "x-auth-token": AUTH_TOKEN } };
+
+    let response = await http.get(`${URL}/api/admin/promos`, headers);
+
+    if (response.status && response.status === 200) {
+      response.data.forEach((promo) => {
+        if (promo._id === promoId) {
+          setPromotion(promo);
+          return;
+        }
+      });
+    }
+  }
 
   async function updateOrder() {
     let data = { status: newStatus };
@@ -88,10 +108,13 @@ function OrderDetails() {
     });
 
     if (response.status && response.status === 200) {
+      console.log(response.data);
       getOrderOwner(response.data.customerId);
       setContent(response.data.content);
       setStatus(response.data.status);
       setDate(response.data.date);
+      setPromoId(response.data.promotionId);
+      setPaymentSource(response.data.payment_details);
       return;
     }
   }
@@ -99,6 +122,12 @@ function OrderDetails() {
   useEffect(() => {
     getOrder();
   }, [id]);
+
+  useEffect(() => {
+    if (!promoId) return;
+
+    getPromo();
+  }, [promoId]);
 
   return (
     <div id="product-details">
@@ -111,12 +140,18 @@ function OrderDetails() {
               type="text"
               placeholder="Nombre del cliente"
               value={`${firstName && firstName} ${lastName && lastName}`}
+              readOnly
             />
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridPhone">
             <Form.Label>Telefono</Form.Label>
-            <Form.Control type="text" placeholder="Telefono" value={phone} />
+            <Form.Control
+              type="text"
+              placeholder="Telefono"
+              value={phone}
+              readOnly
+            />
           </Form.Group>
         </Row>
 
@@ -126,6 +161,7 @@ function OrderDetails() {
             type="email"
             placeholder="name@example.com"
             value={email}
+            readOnly
           />
         </Form.Group>
 
@@ -135,18 +171,51 @@ function OrderDetails() {
             type="text"
             placeholder="2121 calle principal"
             value={street}
+            readOnly
           />
         </Form.Group>
 
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formGridCity">
             <Form.Label>Ciudad</Form.Label>
-            <Form.Control type="text" placeholder="Ciudad" value={city} />
+            <Form.Control
+              type="text"
+              placeholder="Ciudad"
+              value={city}
+              readOnly
+            />
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridSector">
             <Form.Label>Sector</Form.Label>
-            <Form.Control type="text" placeholder="Sector" value={sector} />
+            <Form.Control
+              type="text"
+              placeholder="Sector"
+              value={sector}
+              readOnly
+            />
+          </Form.Group>
+        </Row>
+
+        <Row className="mb-3">
+          <Form.Group as={Col} controlId="formGridPaymentSource">
+            <Form.Label>Fuente de Pago</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Fuente de pago"
+              value={!paymentSource ? "N/A" : paymentSource.source}
+              readOnly
+            />
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formGridPromotion">
+            <Form.Label>Promocion</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Promocion"
+              value={!promotion ? "N/A" : promotion.code}
+              readOnly
+            />
           </Form.Group>
         </Row>
 
@@ -157,6 +226,7 @@ function OrderDetails() {
               type="text"
               placeholder="Fecha"
               value={date && date}
+              readOnly
             />
           </Form.Group>
 
